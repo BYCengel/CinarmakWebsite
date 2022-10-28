@@ -1,0 +1,15 @@
+﻿@model CategoryModel
+
+<h1 class="h3">Create Category</h1>
+<hr>
+
+<form asp-controller="Admin" asp-action="CreateCategory" method="POST">
+	<div asp-validation-summary="All" class="text-danger"></div>
+	<div class="mb-3">
+		<label asp-for="Name" class="form-label"></label>
+		<input class="form-control" asp-for="Name">
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+
+	<button type="submit" value="Save Product" class="btn btn-primary">Submit</button>
+</form>

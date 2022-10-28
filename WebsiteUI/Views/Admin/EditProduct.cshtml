@@ -1,0 +1,173 @@
+﻿@using WebsiteUI.Models.PartialViewModels
+@model EditProductViewModel
+@{
+	ProductModel productModel = Model.ProductModel;
+	EditProductImageViewModel productImageViewModel = new EditProductImageViewModel();
+	productImageViewModel.ProductModel = productModel;
+}
+@*
+	name +
+	card description +
+	description +
+
+	base dolar price +
+	sale price +
+	quantity +
+	stockstate +
+
+	is approved +
+	is suggested +
+	Categories +
+
+	Add / Remove Images +
+*@
+
+<form asp-controller="Admin" asp-action="EditProduct" method="post" enctype="multipart/form-data">
+
+	<div class="row">
+		<div asp-validation-summary="All" class="text-danger"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-8">
+			<input type="hidden" asp-for="@Model.ProductModel.Id" value="@Model.ProductModel.Id" />
+			<div class="mb-3">
+				<label asp-for="@productModel.Name" class="form-label"></label>
+				<input class="form-control" asp-for="@productModel.Name" />
+				<span asp-validation-for="@productModel.Name" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@productModel.CardDescription" class="form-label"></label>
+				<textarea class="form-control" asp-for="@productModel.CardDescription" id="cardDescriptionEditor"></textarea>
+				<span asp-validation-for="@productModel.CardDescription" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@productModel.Description" class="form-label"></label>
+				<textarea class="form-control" asp-for="@productModel.Description" id="mainDescriptionEditor"></textarea>
+				<span asp-validation-for="@productModel.Description" class="text-danger"></span>
+			</div>
+
+			<div class="row">
+				<div class="row">
+					<div class="mb-3 col-sm-6">
+						<label asp-for="@productModel.BasePrice" class="form-label"></label>
+						<input class="form-control" asp-for="@productModel.BasePrice" />
+						<span asp-validation-for="@productModel.BasePrice" class="text-danger"></span>
+					</div>
+					<div class="input-group mb-3 col-sm-6">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="BasePriceTypeSelect">Taban Fiyat Döviz Birimi</label>
+						</div>
+						<select asp-for="@Model.ProductModel.BasePriceTypeNumber" class="custom-select" id="BasePriceTypeSelect">
+							<option value="1">Dolar</option>
+							<option value="2">Euro</option>
+							<option value="-1">Taban Fiyat Sistemini Kullanma</option>
+						</select>
+					</div>
+				</div>
+
+				<hr />
+
+				<div class="row">
+					<div class="mb-3 col-sm-6">
+						<label asp-for="@productModel.SalePrice" class="form-label"></label>
+						<input class="form-control" asp-for="@productModel.SalePrice" />
+						<span asp-validation-for="@productModel.SalePrice" class="text-danger"></span>
+					</div>
+					<div class="mb-3 col-sm-6">
+						<label asp-for="@productModel.Quantity" class="form-label"></label>
+						<input class="form-control" asp-for="@productModel.Quantity" />
+						<span asp-validation-for="@productModel.Quantity" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+
+			<hr />
+
+			<div class="mb-3">
+				<div class="row" style="height 60px">
+					@foreach (ImageModel image in @productModel.ImageModels)
+					{
+						productImageViewModel.ImageModel = image;
+						<div class="col-md-2 col-sm-4">
+							@await Html.PartialAsync("_EditProductImage", productImageViewModel);
+						</div>
+					}
+				</div>
+			</div>
+
+			<div class="mb-3">
+				<label asp-for="ImageFiles" class="form-label my-2">Ürün Görselleri Ekle</label>
+				<input class="form-control custom-file-input" asp-for="ImageFiles" multiple />
+			</div>
+		</div>
+
+		<div class="col-md-3">
+			@for (int i = 0; i < @productModel.SelectedCategories.Count; i++)
+			{
+				<input type="hidden" name="SelectedCategories[@i].Id" value="@productModel.SelectedCategories[@i].Id" />
+				<input type="hidden" name="SelectedCategories[@i].Name" value="@productModel.SelectedCategories[@i].Name" />
+			}
+
+			@*@foreach (Category category in ViewBag.Categories)
+			{
+			<div class="input-group mb-3">
+			<div class="input-group-text">
+			<input name="categoryIds" value="@category.Id" class="form-check-input mt-0" type="checkbox" id="category_@(category.Id)"
+			@(Model.SelectedCategories.Any(tc => tc.Id == category.Id)?"checked":"") />
+			</div>
+			<label type="text" class="form-control" for="category_@(category.Id)">@category.Name</label>
+			</div>
+			}*@
+
+			@foreach (Category category in ViewBag.Categories)
+			{
+				<div class="input-group mb-3">
+					<div class="input-group-text">
+						@{
+							if (@productModel.SelectedCategories.Any(tc => tc.Id == category.Id))
+							{
+								<input name="categoryIds" value="@category.Id" class="form-check-input mt-0" type="checkbox" id="category_@(category.Id)" checked />
+							}
+							else
+							{
+								<input name="categoryIds" value="@category.Id" class="form-check-input mt-0" type="checkbox" id="category_@(category.Id)" />
+							}
+						}
+					</div>
+					<label type="text" class="form-control" for="category_@(category.Id)">@category.Name</label>
+				</div>
+			}
+
+			<hr />
+
+			<div class="input-group mb-3">
+				<div class="input-group-text">
+					<input asp-for="@productModel.IsApproved" class="form-check-input mt-0" type="checkbox" />
+				</div>
+				<label asp-for="@productModel.IsApproved" class="form-control"></label>
+			</div>
+			<div class="input-group mb-3">
+				<div class="input-group-text">
+					<input asp-for="@productModel.IsHomeDisplay" class="form-check-input mt-0" type="checkbox" />
+				</div>
+				<label asp-for="@productModel.IsHomeDisplay" class="form-control"></label>
+			</div>
+
+			<hr />
+
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<label class="input-group-text" for="StockStateSelect">Stok Durumu</label>
+				</div>
+				<select asp-for="@productModel.StockStateNumber" class="custom-select" id="StockStateSelect">
+					<option value="3">Stokta Yok</option>
+					<option value="1">Stokta Var</option>
+					<option value="2">Sipariş Üzerine</option>
+				</select>
+			</div>
+		</div>
+		<button type="submit" value="Save Product" class="btn btn-primary">Submit</button>
+	</div>
+
+</form>

@@ -1,0 +1,44 @@
+﻿@model ProductModel
+
+@{
+	Console.WriteLine("heyyy");
+	Console.WriteLine(Model.ImageModels.Count);
+	ImageModel mainImage = new ImageModel();
+	foreach (var image in Model.ImageModels)
+	{
+		if (image.IsMainImageOfProduct)
+		{
+			mainImage = image;
+			break;
+		}
+	}
+
+	if(mainImage == null)
+	{
+		mainImage = Model.ImageModels.First();
+	}
+}
+
+<div class="card mb-2 very-light-background">
+	<img class="card-img-top" src="~/img/@Model.MainImageUrl" />
+	<div class="card-body">
+		<h5 class="card-title">@Model.Name</h5>
+		<small class="text-muted">
+			<i class="fas fa-lira-sign"></i>@Model.SalePrice
+		</small>
+		<p class="card-text">@Model.CardDescription</p>
+		<div class="card-footer text-center">
+			<a asp-controller="Product" asp-action="Details" asp-route-productUrl="@Model.ProductUrl" class="btn btn-primary btn-sm">İncele</a>
+			<p>@Model.StockStateNumber</p>
+
+			@*@if (User.Identity.IsAuthenticated)
+			{
+			<form asp-controller="Cart" asp-action="AddToCart" method="post" style="display: inline;">
+			<input type="hidden" name="productId" value="@Model.ProductId">
+			<input type="hidden" name="quantity" value="1">
+			<button type="submit" class="btn btn-primary btn-sm">Sepete Ekle</button>
+			</form>
+			}*@
+		</div>
+	</div>
+</div>

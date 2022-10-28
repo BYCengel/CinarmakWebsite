@@ -1,0 +1,17 @@
+E:\CinarmakWebsite\CinarmakWebsite\Business\bin\Debug\net6.0\Business.deps.json
+E:\CinarmakWebsite\CinarmakWebsite\Business\bin\Debug\net6.0\Business.dll
+E:\CinarmakWebsite\CinarmakWebsite\Business\bin\Debug\net6.0\Business.pdb
+E:\CinarmakWebsite\CinarmakWebsite\Business\bin\Debug\net6.0\Data.dll
+E:\CinarmakWebsite\CinarmakWebsite\Business\bin\Debug\net6.0\Entities.dll
+E:\CinarmakWebsite\CinarmakWebsite\Business\bin\Debug\net6.0\Data.pdb
+E:\CinarmakWebsite\CinarmakWebsite\Business\bin\Debug\net6.0\Entities.pdb
+E:\CinarmakWebsite\CinarmakWebsite\Business\obj\Debug\net6.0\Business.csproj.AssemblyReference.cache
+E:\CinarmakWebsite\CinarmakWebsite\Business\obj\Debug\net6.0\Business.GeneratedMSBuildEditorConfig.editorconfig
+E:\CinarmakWebsite\CinarmakWebsite\Business\obj\Debug\net6.0\Business.AssemblyInfoInputs.cache
+E:\CinarmakWebsite\CinarmakWebsite\Business\obj\Debug\net6.0\Business.AssemblyInfo.cs
+E:\CinarmakWebsite\CinarmakWebsite\Business\obj\Debug\net6.0\Business.csproj.CoreCompileInputs.cache
+E:\CinarmakWebsite\CinarmakWebsite\Business\obj\Debug\net6.0\Business.csproj.CopyComplete
+E:\CinarmakWebsite\CinarmakWebsite\Business\obj\Debug\net6.0\Business.dll
+E:\CinarmakWebsite\CinarmakWebsite\Business\obj\Debug\net6.0\refint\Business.dll
+E:\CinarmakWebsite\CinarmakWebsite\Business\obj\Debug\net6.0\Business.pdb
+E:\CinarmakWebsite\CinarmakWebsite\Business\obj\Debug\net6.0\ref\Business.dll

@@ -1,0 +1,49 @@
+﻿@model RegisterViewModel
+
+<h1 class="h3">Register Page</h1>
+<hr />
+
+<div class="row">
+	<div class="col-md-8">
+		<form asp-controller="Account" asp-action="Register" method="POST">
+			<div asp-validation-summary="All" class="text-danger">
+				<div class="form-control row">
+					<label asp-for="@Model.RegisterModel.FirstName" class="form-label"></label>
+					<input class="form-control" asp-for="@Model.RegisterModel.FirstName">
+					<span asp-validation-for="@Model.RegisterModel.FirstName" class="text-danger"></span>
+				</div>
+				<div class="form-control row">
+					<label asp-for="@Model.RegisterModel.LastName" class="form-label"></label>
+					<input class="form-control" asp-for="@Model.RegisterModel.LastName">
+					<span asp-validation-for="@Model.RegisterModel.LastName" class="text-danger"></span>
+				</div>
+				<div class="form-control row">
+					<label asp-for="@Model.RegisterModel.UserName" class="form-label"></label>
+					<input class="form-control" asp-for="@Model.RegisterModel.UserName">
+					<span asp-validation-for="@Model.RegisterModel.UserName" class="text-danger"></span>
+				</div>
+				<div class="form-control row">
+					<label asp-for="@Model.RegisterModel.Email" class="form-label"></label>
+					<input class="form-control" asp-for="@Model.RegisterModel.Email">
+					<span asp-validation-for="@Model.RegisterModel.Email" class="text-danger"></span>
+				</div>
+				<div class="form-control row">
+					<label asp-for="@Model.RegisterModel.Password" class="form-label"></label>
+					<input class="form-control" asp-for="@Model.RegisterModel.Password">
+					<span asp-validation-for="@Model.RegisterModel.Password" class="text-danger"></span>
+				</div>
+				<div class="form-control row">
+					<label asp-for="@Model.RegisterModel.ConfirmPassword" class="form-label"></label>
+					<input class="form-control" asp-for="@Model.RegisterModel.ConfirmPassword">
+					<span asp-validation-for="@Model.RegisterModel.ConfirmPassword" class="text-danger"></span>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	</div>
+</div>
+
+@section Scripts{
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

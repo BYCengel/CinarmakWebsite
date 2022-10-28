@@ -1,0 +1,11 @@
+﻿@using WebsiteUI.Models.PartialViewModels
+@model EditProductImageViewModel
+
+<div class="card mb-2 light-background">
+	<div style="width: 30px; height: 30px; align-self:end;">
+		<a asp-controller="Admin" asp-action="RemoveImageFromProduct" asp-route-productId="@Model.ProductModel.Id" asp-route-imageUrl="@Model.ImageModel.Url" class="btn">
+			<i class="fa-solid fa-x" style="background-color: red;"></i>
+		</a>
+	</div>
+	<img class="card-img-top" src="~/img/@Model.ImageModel.Url" />
+</div>

@@ -1,0 +1,124 @@
+﻿@model CreateProductViewModel
+
+<h1 class="h3">Create Product</h1>
+<hr>
+
+<form asp-controller="Admin" asp-action="CreateProduct" method="POST" enctype="multipart/form-data">
+	<div asp-validation-summary="All" class="text-danger"></div>
+	<div class="row">
+		<div class="col-md-10">
+			<div class="mb-3">
+				<label asp-for="@Model.ProductModel.Name" class="form-label"></label>
+				<input class="form-control" asp-for="@Model.ProductModel.Name">
+				<span asp-validation-for="@Model.ProductModel.Name" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.ProductModel.CardDescription" class="form-label"></label>
+				<textarea class="form-control" asp-for="@Model.ProductModel.CardDescription" id="CardDescriptionEditor"></textarea>
+				<span asp-validation-for="@Model.ProductModel.CardDescription" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="@Model.ProductModel.Description" class="form-label"></label>
+				<textarea class="form-control" asp-for="@Model.ProductModel.Description" id="DescriptionEditor"></textarea>
+				<span asp-validation-for="@Model.ProductModel.Description" class="text-danger"></span>
+			</div>
+
+			<hr />
+
+			@*<div class="mb-3">
+			<label asp-for="@Model.ProductModel.ImageUrl" class="form-label"></label>
+			<input class="form-control" asp-for="@Model.ProductModel.ImageUrl">
+			<span asp-validation-for="@Model.ProductModel.ImageUrl" class="text-danger"></span>
+			</div>*@
+
+			<div class="mb-3">
+				<input class="form-control custom-file-input" asp-for="ImageFiles" multiple />
+			</div>
+
+			<hr />
+
+			<div class="row">
+				<div class="row">
+					<div class="mb-3 col-sm-6">
+						<label asp-for="@Model.ProductModel.BasePrice" class="form-label"></label>
+						<input class="form-control" asp-for="@Model.ProductModel.BasePrice">
+						<span asp-validation-for="@Model.ProductModel.BasePrice" class="text-danger"></span>
+					</div>
+					<div class="input-group mb-3 col-sm-6">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="BasePriceTypeSelect">Taban Fiyat Döviz Birimi</label>
+						</div>
+						<select asp-for="@Model.ProductModel.BasePriceTypeNumber" class="custom-select" id="BasePriceTypeSelect">
+							<option value="1">Dolar</option>
+							<option value="2">Euro</option>
+							<option value="-1">Taban Fiyat Sistemini Kullanma</option>
+						</select>
+					</div>
+				</div>
+
+				<hr />
+
+				<div class="row">
+					<div class="mb-3 col-sm-6">
+						<label asp-for="@Model.ProductModel.SalePrice" class="form-label"></label>
+						<input class="form-control" asp-for="@Model.ProductModel.SalePrice">
+						<span asp-validation-for="@Model.ProductModel.SalePrice" class="text-danger"></span>
+					</div>
+					<div class="mb-3 col-sm-6">
+						<label asp-for="@Model.ProductModel.Quantity" class="form-label"></label>
+						<input class="form-control" asp-for="@Model.ProductModel.Quantity">
+						<span asp-validation-for="@Model.ProductModel.Quantity" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<label class="input-group-text" for="StockStateSelect">Stok Durumu</label>
+				</div>
+				<select asp-for="@Model.ProductModel.StockStateNumber" class="custom-select" id="StockStateSelect">
+					<option value="3">Stokta Yok</option>
+					<option value="1">Stokta Var</option>
+					<option value="2">Sipariş Üzerine</option>
+				</select>
+			</div>
+		</div>
+		<div class="col-md-2">
+			<div class="input-group mb-3">
+				<div class="input-group-text">
+					<input asp-for="@Model.ProductModel.IsHomeDisplay" class="form-check-input mt-0" type="checkbox" />
+				</div>
+				<label asp-for="@Model.ProductModel.IsHomeDisplay" class="form-control">Ana Sayfa Ürünü</label>
+			</div>
+
+			<hr />
+
+			@for (int i = 0; i < Model.CategoryModels.Count; i++)
+			{
+				<input type="hidden" name="SelectedCategories[@i].CategoryId" value="@Model.CategoryModels[@i].Id" />
+				<input type="hidden" name="SelectedCategories[@i].CategoryName" value="@Model.CategoryModels[@i].Name" />
+			}
+
+			@foreach (var category in @Model.CategoryModels)
+			{
+				<div class="input-group mb-3">
+					<div class="input-group-text">
+						<input name="categoryIds" value="@category.Id" class="form-check-input mt-0" type="checkbox" itemid="category_@(category.Id)" />
+					</div>
+					<label type="text" class="form-control" for="category_@(category.Id)">@category.Name</label>
+				</div>
+			}
+		</div>
+	</div>
+
+	<button type="submit" value="Save Product" class="btn btn-primary">Oluştur</button>
+</form>
+
+@section  Scripts{
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+	<script src="//cdn.ckeditor.com/4.19.1/standard/ckeditor.js"></script>
+	<script>
+		CKEDITOR.replace('CardDescriptionEditor');
+		CKEDITOR.replace('DescriptionEditor');
+	</script>
+}

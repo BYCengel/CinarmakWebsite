@@ -1,0 +1,47 @@
+﻿@model CategoryListModel
+
+<div class="row">
+	<div class="col-md-12">
+		<a asp-controller="Admin" asp-action="CreateCategory" class="btn btn-primary btn-sm mr-2">Add Category</a>
+		<h1 class="h3">Admin Categories</h1>
+		<hr />
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<td>Id</td>
+					<td>Kategorinin ismi</td>
+					<td>Görüntülenme Sayısı</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model.categoryModels.Count > 0)
+				{
+					foreach (var category in Model.categoryModels)
+					{
+						<tr>
+							<td>@category.Id</td>
+							<td>@category.Name</td>
+							<td>@category.ViewCount</td>
+							<td>
+								<a asp-controller="Admin" asp-action="EditCategory" asp-route-categoryId="@category.Id" class="btn btn-primary btn-sm mr-2">Edit</a>
+
+								<form asp-controller="Admin" asp-action="DeleteCategory" method="POST" style="display: inline;">
+									<input type="hidden" name="CategoryId" value="@category.Id" />
+									<button type="submit" class="btn btn-danger btn-sm mr-2">Delete</button>
+								</form>
+							</td>
+						</tr>
+					}
+				}
+				else
+				{
+					<div class="alert alert-warning">
+						<h3>No Categories</h3>
+					</div>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+

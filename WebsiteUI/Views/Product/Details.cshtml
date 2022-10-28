@@ -1,0 +1,104 @@
+﻿@model ProductModel
+
+@{
+	ImageModel mainImage = null;
+	List<ImageModel> otherImages = new List<ImageModel>();
+	bool found = false;
+	foreach (var image in Model.ImageModels)
+	{
+		if (image.IsMainImageOfProduct && !found)
+		{
+			mainImage = image;
+			found = true;
+		}
+		else
+		{
+			otherImages.Add(image);
+		}
+	}
+	if (!found)
+	{
+		mainImage = otherImages.First();
+		otherImages.Remove(mainImage);
+	}
+}
+
+<div class="card mb-3">
+	<div class="card-body">
+		<div class="row no-gutters">
+			<div class="col-md-3">
+				@{
+					<div class="row">
+						<img src="~/img/@mainImage.Url" class="img-fluid img-details" id="mainImage" onclick="PopImg(this.src);">
+						<div id="modal" class="siteModal">
+							<span class="close" onclick="CloseImg();">&times;</span>
+							<img class="siteModal-content" id="modalImage">
+						</div>
+					</div>
+					<div class="row mt-2">
+						@{
+							string imgId = "";
+							int imgCount = 1;
+							foreach (var image in otherImages)
+							{
+								imgId = "img" + imgCount.ToString();
+								<div class="col-4">
+									<img src="~/img/@image.Url" class="img-fluid img-details" id="@imgId" onclick="PopImg(this.src);">
+									<span class="close" onclick="CloseImg();">&times;</span>
+								</div>
+								imgCount += 1;
+							}
+						}
+					</div>
+				}
+			</div>
+			<div class="col-md-9">
+				<h1 class="mb-3 card-title">@Model.Name</h1> <hr />
+				@foreach (Category category in Model.SelectedCategories)
+				{
+					<a asp-controller="Shop" asp-action="List" asp-route-category="@category.CategoryUrl" class="btn btn-link p-0 mb-3">@category.Name</a>
+				}
+				<div class="card-text">
+					<h4 class="text-primary mb-3">
+						<i class="fas fa-lira-sign"></i>
+						@Model.SalePrice
+					</h4>
+				</div>
+
+				<form asp-controller="Cart" asp-action="AddToCart" method="post" class="form-inline">
+					<input type="hidden" name="productId" value="@Model.ProductUrl">
+					<div class="input-group mb-3">
+						<input type="number" name="quantity" value="1" class="form-control" min="1" step="1" style="width: 100px;">
+						<div class="input-group-append">
+							<button type="submit" class="btn btn-primary">
+								<i class="fa-solid fa-cart-shopping">Add to Cart</i>
+							</button>
+						</div>
+					</div>
+				</form>
+
+				<button type="submit" class="btn btn-success btn-lg">Add to Card</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<p class="p-3">@Html.Raw(Model.Description)</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var span = document.getElementsByClassName("close")[0];
+	var modalImg = document.getElementById("modalImage");
+	var modal = document.getElementById("modal");
+
+	function PopImg(src) {
+		modal.style.display = "block";
+		modalImg.src = src;
+	}
+
+	function CloseImg() {
+		modal.style.display = "none";
+	}
+</script>

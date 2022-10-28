@@ -1,0 +1,116 @@
+﻿@model ProductListViewModel
+
+@{
+	Console.WriteLine("heyyy");
+
+	foreach (var product in Model.ProductModels)
+	{
+		Console.WriteLine(product.ImageModels.Count);
+		foreach (var image in product.ImageModels)
+		{
+			if (image.IsMainImageOfProduct)
+			{
+				product.MainImageUrl = image.Url;
+				break;
+			}
+		}
+
+		if (string.IsNullOrEmpty(product.MainImageUrl))
+		{
+			product.MainImageUrl = product.ImageModels.First().Url;
+		}
+	}
+}
+
+@{
+	string GetPriceText(int typeNumber, double price)
+	{
+		if (typeNumber == 1)
+		{
+			return price + " Dolar";
+		}
+		else if(typeNumber == 2)
+		{
+			return price + " Euro";
+		}
+		else
+		{
+			return price + " (aktif değil)";
+		}
+	}
+}
+
+<div class="row">
+	<div class="col-md-12">
+		<a asp-controller="Admin" asp-action="CreateProduct" class="btn btn-primary btn-sm mr-2">Add Product</a>
+		<h1>Admin Products</h1>
+		<hr />
+		<table class="table table-bordered mt-3">
+			<thead>
+				<tr>
+					<td style="width: 30px;">Id</td>
+					<td style="width: 30px;">Görsel</td>
+					<td>Name</td>
+					<td style="width: 85px;">Taban Fiyat</td>
+					<td style="width: 70px;">Satış Fiyatı (lira)</td>
+					<td style="width: 70px;">Görüntülenme Miktarı</td>
+					<td style="width: 70px;">Satış Miktarı</td>
+					<td style="width: 20px;">Anasayfa</td>
+					<td style="width: 20px;">Onaylı</td>
+					<td style="width: 150px;"></td>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model.ProductModels.Count > 0)
+				{
+					@foreach (var product in Model.ProductModels)
+					{
+						<tr>
+							<td>@product.Id</td>
+							<td><img src="~/img/@product.MainImageUrl" width="80" /></td>
+							<td>@product.Name</td>
+							<td>@(GetPriceText(product.BasePriceTypeNumber, product.BasePrice))</td>
+							<td>@product.SalePrice</td>
+							<td>@product.ViewCount</td>
+							<td>@product.PurchaseCount</td>
+							<td>
+								@if (product.IsHomeDisplay)
+								{
+									<i class="fa-solid fa-check"></i>
+								}
+								else
+								{
+									<i class="fa-solid fa-xmark"></i>
+								}
+							</td>
+							<td>
+								@if (product.IsApproved)
+								{
+									<i class="fa-solid fa-check"></i>
+								}
+								else
+								{
+									<i class="fa-solid fa-xmark"></i>
+								}
+							</td>
+							<td>
+								<a asp-controller="Admin" asp-action="EditProduct" asp-route-productId="@product.Id" class="btn btn-primary btn-sm mr-2">Edit</a>
+
+								<form asp-controller="Admin" asp-action="DeleteProduct" method="POST" style="display: inline;">
+									<input type="hidden" name="productId" value="@product.Id" />
+									<button type="submit" class="btn btn-danger btn-sm mr-2">Delete</button>
+								</form>
+							</td>
+						</tr>
+					}
+				}
+				else
+				{
+					<div class="alert alert-warning">
+						<h3>No Products</h3>
+					</div>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

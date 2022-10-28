@@ -1,0 +1,120 @@
+﻿@model HomePageViewModel
+
+@{
+	ViewData["Title"] = "Home Page";
+	int popularProductsSlideCount = ((Model.PopularProductModels.Count) / 6) + 1;
+	int suggestedProductsSlideCount = ((Model.SuggestedProductModels.Count) / 6) + 1;
+}
+
+<div class="m-3 light-background">
+	<h1 class="h1 text-center m-2">HEADER TEXT</h1>
+	<h2 class="h4 text-center m-2">lorem text lorem text lorem textlorem text lorem text lorem textlorem text lorem text lorem textlorem text lorem text lorem text</h2>
+</div>
+
+<div class="light-background">
+	<div id="imagesCarousel" class="carousel carousel-dark slide w-50 m-auto" data-bs-ride="carousel">
+		<div class="carousel-inner">
+			@{
+				int j = 0;
+				foreach (var image in Model.HomeDisplayImageModels)
+				{
+					if (j == 0)
+					{
+							<div class="carousel-item active">
+								<img src="~/img/@image.Url" class="d-block w-100" alt="...">
+							</div>
+					}
+					else
+					{
+							<div class="carousel-item">
+								<img src="~/img/@image.Url" class="d-block w-100" alt="...">
+							</div>
+					}
+					j += 1;
+				}
+			}
+		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#imagesCarousel" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Previous</span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#imagesCarousel" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Next</span>
+		</button>
+	</div>
+</div>
+
+<div class="light-background">
+	<div>
+		<h4 class="h4 text-center my-3 fw-bold">Popüler Ürünler</h4>
+		<div class="">
+			<div id="popularProductCarousel" class="carousel carousel-dark slide w-100 m-auto" data-bs-ride="carousel">
+				<div class="carousel-inner">
+					@for (int i = 0; i < popularProductsSlideCount; i++)
+					{
+						<div class="carousel-item active">
+							<div class="row justify-content-md-center w-75 m-auto">
+								@{
+									j = 0;
+									foreach (var product in @Model.PopularProductModels)
+									{
+											<div class="col-md">
+												@await Html.PartialAsync("_Product", product)
+											</div>
+										j += 1;
+										if (j == 5) { break; }
+									}
+								}
+							</div>
+						</div>
+					}
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#popularProductCarousel" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#popularProductCarousel" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Next</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div>
+		<h4 class="h4 text-center my-3 fw-bold">Öne Çıkan Ürünler</h4>
+		<div class="">
+			<div id="interestingProductsCarousel" class="carousel carousel-dark slide w-100 m-auto" data-bs-ride="carousel">
+				<div class="carousel-inner">
+					@for (int i = 0; i < suggestedProductsSlideCount; i++)
+					{
+						<div class="carousel-item active">
+							<div class="row justify-content-md-center w-75 m-auto">
+								@{
+									j = 0;
+									foreach (var product in @Model.SuggestedProductModels)
+									{
+											<div class="col-md">
+												@await Html.PartialAsync("_Product", product)
+											</div>
+										j += 1;
+										if (j == 5) { break; }
+									}
+								}
+							</div>
+						</div>
+					}
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#interestingProductsCarousel" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#interestingProductsCarousel" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Next</span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+

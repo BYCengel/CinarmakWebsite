@@ -1,0 +1,123 @@
+﻿@model EditCategoryViewModel
+@* 
+	FEATURES
+	- change name +
+	- display products of this category +
+		have a page system for products +
+	- ability to edit products +
+	- abiity to remove a product from this category +
+*@
+
+<div class="row">
+	<div class="col-md-4">
+		<form asp-controller="Admin" asp-action="EditCategory" method="post">
+			<div asp-validation-summary="All" class="text-danger"></div>
+			<input type="hidden" asp-for="@Model.CategoryModel.Id" value="@Model.CategoryModel.Id" />
+
+			<div class="mb-3">
+				<label asp-for="@Model.CategoryModel.Name" class="form-label"></label>
+				<input class="form-control" asp-for="@Model.CategoryModel.Name" />
+				<span asp-validation-for="@Model.CategoryModel.Name" class="text-danger"></span>
+			</div>
+
+			<button type="submit" value="Save Category" class="btn btn-primary">Submit</button>
+
+			<div id="Products">
+				@for (var i = 0; i < Model.ProductModels.Count; i++)
+				{
+					<input type="hidden" name="Products[@i].ProductId" value="@Model.ProductModels[@i].Id">
+					<input type="hidden" name="Products[@i].Name" value="@Model.ProductModels[@i].Name">
+					<input type="hidden" name="Products[@i].ImageUrl" value="@Model.ProductModels[@i].ImageModels.First().Url">
+					<input type="hidden" name="Products[@i].ProductName" value="@Model.ProductModels[@i].Name">
+					<input type="hidden" name="Products[@i].ProductPrice" value="@Model.ProductModels[@i].SalePrice">
+					<input type="hidden" name="Products[@i].IsApproved" value="@Model.ProductModels[@i].IsApproved.ToString()">
+				}
+			</div>
+		</form>
+	</div>
+
+	<div class="col-md-8">
+		<div class="row">
+			<div>
+				<table class="table table-sm table-bordered mt-3">
+					<thead>
+						<tr>
+							<td style="width: 30px;">Id</td>
+							<td style="width: 30px;">İsim</td>
+							<td style="width: 30px;">Görsel</td>
+							<td style="width: 20px;">Satış Fiyatı</td>
+							<td style="width: 20px;">Onaylı</td>
+							<td style="width: 150px;"></td>
+						</tr>
+					</thead>
+					<tbody>
+						@if (Model.ProductModels.Count > 0)
+						{
+							@foreach (var product in Model.ProductModels)
+							{
+								<tr>
+									<td>@product.Id</td>
+									<td>@product.Name</td>
+									<td><img src="~/img/@product.ImageModels.First().Url" width="80" /></td>
+									<td>
+										@if (product.IsApproved)
+										{
+											<i class="fa-solid fa-check"></i>
+										}
+										else
+										{
+											<i class="fa-solid fa-xmark"></i>
+										}
+									</td>
+									<td>
+										<a asp-controller="Admin" asp-action="EditProduct" asp-route-productId="@product.Id" class="btn btn-primary mr-2">Düzenle</a>
+
+										<form asp-controller="Admin" asp-action="RemoveFromCategory" method="post">
+											<input type="hidden" name="productId" value="@product.Id" />
+											<input type="hidden" name="categoryId" value="@Model.CategoryModel.Id" />
+											<button type="submit" class="btn btn-danger">Remove From Category</button>
+										</form>
+									</td>
+								</tr>
+							}
+						}
+						else
+						{
+							<div class="alert alert-warning">
+								<h3>No Products</h3>
+							</div>
+						}
+					</tbody>
+				</table>
+				<div class="col">
+					<nav aria-label="Page Navigation">
+						<ul class="pagination">
+							@for (int i = 0; i < Model.PageInfo.TotalPages(); i++)
+							{
+								if (Model.PageInfo.CurrentPage == (i + 1))
+								{
+									<li class="page-item active">
+										<a class="page-link" asp-controller="Admin" asp-action="EditCategory"
+								   asp-route-categoryId="@Model.CategoryModel.Id" asp-route-page="@(i+1)">@(i+1)</a>
+									</li>
+								}
+								else
+								{
+									<li class="page-item">
+										<a class="page-link" asp-controller="Admin" asp-action="EditCategory"
+								   asp-route-categoryId="@Model.CategoryModel.Id" asp-route-page="@(i+1)">@(i+1)</a>
+									</li>
+								}
+							}
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts{
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

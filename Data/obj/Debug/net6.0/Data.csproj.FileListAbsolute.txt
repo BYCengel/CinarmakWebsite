@@ -1,0 +1,17 @@
+E:\CinarmakWebsite\CinarmakWebsite\Data\obj\Debug\net6.0\Data.csproj.AssemblyReference.cache
+E:\CinarmakWebsite\CinarmakWebsite\Data\obj\Debug\net6.0\Data.GeneratedMSBuildEditorConfig.editorconfig
+E:\CinarmakWebsite\CinarmakWebsite\Data\obj\Debug\net6.0\Data.AssemblyInfoInputs.cache
+E:\CinarmakWebsite\CinarmakWebsite\Data\obj\Debug\net6.0\Data.AssemblyInfo.cs
+E:\CinarmakWebsite\CinarmakWebsite\Data\obj\Debug\net6.0\Data.csproj.CoreCompileInputs.cache
+E:\CinarmakWebsite\CinarmakWebsite\Data\bin\Debug\net6.0\Data.deps.json
+E:\CinarmakWebsite\CinarmakWebsite\Data\bin\Debug\net6.0\Data.runtimeconfig.json
+E:\CinarmakWebsite\CinarmakWebsite\Data\bin\Debug\net6.0\Data.dll
+E:\CinarmakWebsite\CinarmakWebsite\Data\bin\Debug\net6.0\Data.pdb
+E:\CinarmakWebsite\CinarmakWebsite\Data\bin\Debug\net6.0\Entities.dll
+E:\CinarmakWebsite\CinarmakWebsite\Data\bin\Debug\net6.0\Entities.pdb
+E:\CinarmakWebsite\CinarmakWebsite\Data\obj\Debug\net6.0\Data.csproj.CopyComplete
+E:\CinarmakWebsite\CinarmakWebsite\Data\obj\Debug\net6.0\Data.dll
+E:\CinarmakWebsite\CinarmakWebsite\Data\obj\Debug\net6.0\refint\Data.dll
+E:\CinarmakWebsite\CinarmakWebsite\Data\obj\Debug\net6.0\Data.pdb
+E:\CinarmakWebsite\CinarmakWebsite\Data\obj\Debug\net6.0\Data.genruntimeconfig.cache
+E:\CinarmakWebsite\CinarmakWebsite\Data\obj\Debug\net6.0\ref\Data.dll

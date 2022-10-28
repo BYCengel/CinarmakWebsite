@@ -1,0 +1,31 @@
+﻿@model LoginViewModel
+
+
+<h1 class="h3">Giriş Sayfası</h1>
+<hr />
+
+<div class="row">
+	<div class="col-md-8">
+		<form asp-controller="Account" asp-action="Login" method="POST">
+			<div asp-validation-summary="All" class="text-danger"></div>
+				<input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+				<div class="form-control row">
+					<label asp-for="@Model.UserModel.UserName" class="form-label"></label>
+					<input class="form-control" asp-for="@Model.UserModel.UserName">
+					<span asp-validation-for="@Model.UserModel.UserName" class="text-danger"></span>
+				</div>
+				<div class="form-control row">
+					<label asp-for="@Model.UserModel.Password" class="form-label"></label>
+					<input class="form-control" asp-for="@Model.UserModel.Password">
+					<span asp-validation-for="@Model.UserModel.Password" class="text-danger"></span>
+				</div>
+			<button type="submit" class="btn btn-primary">Login</button>
+			<a asp-controller="Account" asp-action="ForgotPassword" class="btn btn-link" >forgot my password</a>
+		</form>
+	</div>
+</div>
+
+@section Scripts{
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
