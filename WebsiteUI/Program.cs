@@ -117,6 +117,26 @@ app.MapControllerRoute(
     defaults: new { controller = "Admin", action = "RoleCreate" }
     );
 
+app.MapControllerRoute(
+    name: "adminuserlist",
+    pattern: "admin/userlist",
+    defaults: new { controller = "Admin", action = "UserList" }
+    );
+
+app.MapControllerRoute(
+    name: "adminuseredit",
+    pattern: "admin/useredit/{userId}",
+    defaults: new { controller = "Admin", action = "UserEdit" }
+    );
+
+app.MapControllerRoute(
+    name: "adminuserdelete",
+    pattern: "admin/userdelete",
+    defaults: new { controller = "Admin", action = "UserDelete" }
+    );
+
+
+
 //Home Controller
 app.MapControllerRoute(
     name: "default",

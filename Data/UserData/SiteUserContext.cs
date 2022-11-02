@@ -1,4 +1,5 @@
-﻿using Entities.UserEntities.SiteUser;
+﻿using Entities;
+using Entities.UserEntities.SiteUser;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,6 +12,7 @@ namespace Data.UserData
 {
     public class SiteUserContext : IdentityDbContext<SiteUser>
     {
+        public DbSet<Address> Addresses { get; set; }
         public SiteUserContext(DbContextOptions<SiteUserContext> options) : base(options)
         {
 

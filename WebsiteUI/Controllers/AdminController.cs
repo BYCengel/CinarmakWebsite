@@ -495,9 +495,15 @@ namespace WebsiteUI.Controllers
             var members = new List<SiteUser>();
             var nonMembers = new List<SiteUser>();
 
+            if (role == null)
+            {
+                Console.WriteLine("role is null with given Id");
+                Console.WriteLine("given Id: " + roleId);
+            }
+
             foreach (var user in _userManager.Users)
             {
-                if(await _userManager.IsInRoleAsync(user, role.Name))
+                if (await _userManager.IsInRoleAsync(user, role.Name))
                 {
                     members.Add(user);
                 }
@@ -521,6 +527,8 @@ namespace WebsiteUI.Controllers
         [HttpPost]
         public async Task<IActionResult> RoleEdit(RoleEditViewModel viewModel)
         {
+            Console.WriteLine("in httppost roleedit");
+
             if (!ModelState.IsValid)
             {
                 foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
@@ -530,15 +538,13 @@ namespace WebsiteUI.Controllers
                 return View(viewModel);
             }
 
-            await _roleManager.SetRoleNameAsync(viewModel.Role, viewModel.NewRoleName);
-
             if (viewModel.IdsToDelete != null)
             {
                 //removes users from role
                 foreach (var userId in viewModel.IdsToDelete)
                 {
                     var user = await _userManager.FindByIdAsync(userId);
-                    if(user != null)
+                    if (user != null)
                     {
                         var result = await _userManager.RemoveFromRoleAsync(user, viewModel.Role.Name);
 
@@ -553,7 +559,7 @@ namespace WebsiteUI.Controllers
                 }
             }
 
-            if(viewModel.IdsToAdd != null)
+            if (viewModel.IdsToAdd != null)
             {
                 foreach (var userId in viewModel.IdsToAdd)
                 {
@@ -571,13 +577,113 @@ namespace WebsiteUI.Controllers
                         }
                     }
                 }
-            } 
+            }
+
+            if (!string.IsNullOrEmpty(viewModel.NewRoleName))
+            {
+                var role = await _roleManager.FindByIdAsync(viewModel.Role.Id);
+                role.Name = viewModel.NewRoleName;
+                var result = await _roleManager.UpdateAsync(role);
+
+                if (result.Succeeded)
+                {
+                    CreateMessage("İsim başarılı bir şekilde" + viewModel.NewRoleName + "olarak değiştirildi.", "success", "İsim Değiştirme Başarılı");
+                }
+                else
+                {
+                    CreateMessage("İsim değiştirme başarısız.", "danger", "İsim Değiştirme Başarısız");
+                    foreach (var error in result.Errors)
+                    {
+                        Console.WriteLine(error.Description);
+                    }
+                }
+            }
 
             return Redirect("/admin/roleedit/" + viewModel.Role.Id);
         }
 
+        public IActionResult UserList()
+        {
+            return View(_userManager.Users);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UserEdit(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                var selectedRoles = await _userManager.GetRolesAsync(user);
+
+                ViewBag.roleNames = GetRoleNames();
+                return View(new UserEditViewModel()
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    EmailConfirmed = user.EmailConfirmed,
+                    SelectedRoles = selectedRoles
+                });
+            }
+            CreateMessage("No user with this Id", "warning", "Error");
+            return Redirect("~/admin/userlist");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UserEdit(UserEditViewModel viewModel, string[] selectedRoles)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(viewModel.UserId);
+
+                if (user != null)
+                {
+                    user.FirstName = viewModel.FirstName;
+                    user.LastName = viewModel.LastName;
+                    user.UserName = viewModel.UserName;
+                    user.EmailConfirmed = viewModel.EmailConfirmed;
+                    user.Email = viewModel.Email;
+
+                    var result = await _userManager.UpdateAsync(user);
+
+                    if (result.Succeeded)
+                    {
+                        var userRoles = await _userManager.GetRolesAsync(user);
+                        if (selectedRoles == null)
+                        {
+                            selectedRoles = new string[] { };
+                        }
+                        await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles).ToArray<string>()); //adds not already included roles.
+                        await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles).ToArray<string>()); //removes selected roles
+
+                        ViewBag.roleNames = GetRoleNames();
+                        return View(viewModel);
+                    }
+                }
+                CreateMessage("Bu ID ile bir kullanıcı bulunamadı.", "danger", "Kullanıcı bulunamadı.");
+                return Redirect("/admin/userlist");
+            }
+            CreateMessage("Değişiklikler işlemeye uygun değil.", "danger", "Model Hatası");
+
+            ViewBag.roleNames = GetRoleNames();
+            return View(viewModel);
+        }
 
         //functions
+
+        public List<string> GetRoleNames()
+        {
+            List<string> roleNames = new List<string>();
+            foreach (var role in _roleManager.Roles)
+            {
+                roleNames.Add(role.Name);
+            }
+
+            return roleNames;
+        }
 
         public void CreateMessage(string message, string alertType, string messageTitle)
         {
